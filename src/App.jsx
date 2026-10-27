@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
+import { fmt } from './model.js';
 import { Store, usePersistentState, useDerived } from './lib/store.jsx';
 import { useAI } from './lib/ai.js';
 import { nextActions } from './lib/engine.js';
