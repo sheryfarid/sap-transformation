@@ -5,7 +5,6 @@ import { useAI } from './lib/ai.js';
 import { nextActions } from './lib/engine.js';
 import { Ring, Spark } from './components/ui.jsx';
 import { Chat } from './components/Chat.jsx';
-import { fmt } from './model.js';
 import { Executive } from './screens/Executive.jsx';
 import { Onboarding } from './screens/Onboarding.jsx';
 import { Discovery } from './screens/Discovery.jsx';

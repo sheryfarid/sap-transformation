@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 
-import { fmt } from '../data/model.js';
+import { fmt } from '../model.js';
 export const CONF = {
   source:['b-source','Confirmed: source evidence'], sap:['b-sap','Confirmed: SAP guidance'], architect:['b-architect','Architect assessment'],
   ai:['b-ai','AI recommendation'], unknown:['b-unknown','Unknown: needs evidence'], rule:['b-rule','Rule proposal']

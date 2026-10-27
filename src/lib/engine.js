@@ -1,7 +1,7 @@
 // Pure domain logic: derived metrics, guidance rules, scoring and planning. No React, no I/O.
 import {
   BTP_PALETTE, CUTOVER0, DEFAULT_RATES, DISPOSITIONS, FINDINGS, FINDING_TEMPLATES, HYPER, HYPER_CRITERIA, MODULES, MODULE_NAMES, OWNERS, PHASES, R, REPORTS, REPORT_OPTIONS, REPORT_SOURCES, RISKS0, STRAT_CRITERIA, SYNTH_HYPER, SYSTEMS, TECH, WORKSTREAMS, WRICEF, WR_NAMES, WR_TYPES, daysAgoDate, fmt, mulberry32, pad, pick, reportRule, today, wpick, wricefRule
-} from '../data/model.js';
+} from '../model.js';
 
 export const INITIAL_BTP = {
   nodes:[
