@@ -1,0 +1,31 @@
+{
+  "name": "sap-transformation-intelligence-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "SAP ECC to S/4HANA (RISE) assessment and migration planning studio with an AI guide.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server/index.js",
+    "preview": "vite preview",
+    "test": "node --test tests/engine.test.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "0.130.0",
+    "express": "4.22.3"
+  },
+  "devDependencies": {
+    "@fontsource/ibm-plex-sans": "5.0.20",
+    "@fontsource/ibm-plex-sans-condensed": "5.0.14",
+    "@vitejs/plugin-react": "4.7.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "vite": "5.4.21"
+  }
+}

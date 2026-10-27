@@ -1,0 +1,70 @@
+# Minimal Kubernetes deployment. Build and push the image first, then:
+#   kubectl create secret generic studio-secrets --from-literal=ANTHROPIC_API_KEY=... 
+#   kubectl apply -f deploy/kubernetes.yaml
+# Single replica on purpose: state is a file on one volume. Move state to PostgreSQL before scaling out.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: studio-data
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transformation-studio
+  labels: { app: transformation-studio }
+spec:
+  replicas: 1
+  strategy: { type: Recreate }
+  selector:
+    matchLabels: { app: transformation-studio }
+  template:
+    metadata:
+      labels: { app: transformation-studio }
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 1000
+      containers:
+        - name: studio
+          image: REGISTRY/sap-transformation-studio:0.1.0
+          ports: [{ containerPort: 8080 }]
+          env:
+            - { name: DATA_DIR, value: /data }
+            - { name: TRUST_PROXY, value: "1" }
+            - { name: ANTHROPIC_MODEL, value: claude-sonnet-5-5 }
+            - name: ANTHROPIC_API_KEY
+              valueFrom: { secretKeyRef: { name: studio-secrets, key: ANTHROPIC_API_KEY, optional: true } }
+          readinessProbe:
+            httpGet: { path: /api/health, port: 8080 }
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /api/health, port: 8080 }
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          resources:
+            requests: { cpu: 100m, memory: 128Mi }
+            limits: { cpu: 500m, memory: 512Mi }
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: { drop: ["ALL"] }
+          volumeMounts: [{ name: data, mountPath: /data }, { name: tmp, mountPath: /tmp }]
+      volumes:
+        - name: data
+          persistentVolumeClaim: { claimName: studio-data }
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: transformation-studio
+spec:
+  selector: { app: transformation-studio }
+  ports: [{ port: 80, targetPort: 8080 }]
